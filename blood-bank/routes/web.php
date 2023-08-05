@@ -1,6 +1,5 @@
-<?php
-
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\StaffProfileController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,9 +22,17 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
+    // User Profile Routes
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+
+    // Blood Bank Staff Profile Routes
+    Route::prefix('staff')->group(function () {
+        Route::get('/profile', [StaffProfileController::class, 'show'])->name('staff.profile.show');
+        Route::get('/profile/edit', [StaffProfileController::class, 'edit'])->name('staff.profile.edit');
+        Route::put('/profile', [StaffProfileController::class, 'update'])->name('staff.profile.update');
+    });
 });
 
 require __DIR__.'/auth.php';
